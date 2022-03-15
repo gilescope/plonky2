@@ -1,4 +1,5 @@
 use crate::field_types::Field;
+use crate::packed_field::PackedField;
 
 /// Precomputations of the evaluation of `Z_H(X) = X^n - 1` on a coset `gK` with `H <= K`.
 pub struct ZeroPolyOnCoset<F: Field> {
@@ -37,6 +38,15 @@ impl<F: Field> ZeroPolyOnCoset<F> {
     /// Returns `1 / Z_H(g * w^i)`.
     pub fn eval_inverse(&self, i: usize) -> F {
         self.inverses[i % self.rate]
+    }
+
+    pub fn eval_inverse_packed<P: PackedField<Scalar = F>>(&self, mut i: usize) -> P {
+        let mut packed = P::ZEROS;
+        for res_j in packed.as_slice_mut() {
+            *res_j = self.eval_inverse(i);
+            i += 1;
+        }
+        packed
     }
 
     /// Returns `L_1(x) = Z_H(x)/(n * (x - 1))` with `x = w^i`.

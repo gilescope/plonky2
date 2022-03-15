@@ -354,7 +354,7 @@ fn compute_quotient_polys<
 
     // Retrieve the LDE values at index `i`.
     let get_at_index =
-        |comm: &'a PolynomialBatch<F, C, D>, i: usize| -> &'a [F] { comm.get_lde_values(i * step) };
+        |comm: &'a PolynomialBatch<F, C, D>, i: usize| -> &'a [F] { comm.get_lde_values(i, step) };
 
     let z_h_on_coset = ZeroPolyOnCoset::new(common_data.degree_bits, quotient_degree_bits);
 
